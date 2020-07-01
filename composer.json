@@ -1,0 +1,20 @@
+{
+    "name": "mohamed/php-mvc",
+    "authors": [
+        {
+            "name": "mrouabeh",
+            "email": "mohamed.rouabehi.pro@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Controller\\": "app/Controller/",
+            "Model\\": "app/Model",
+            "Core\\": "app/Core",
+            "Utility\\": "app/Utility",
+            "View\\": "app/View"
+        }
+    },
+    "require": {}
+}
