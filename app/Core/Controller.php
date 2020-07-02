@@ -11,8 +11,10 @@ class Controller
         $this->view = new View();
     }
 
-    public function view($path, $params = null)
+    public function view($file, $params = null)
     {
+        $path = str_replace(".", "/", $file);
+        $path .= ".html.twig";
         if ($params)
         {
             $this->view->render($path, $params);

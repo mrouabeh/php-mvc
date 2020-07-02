@@ -4,7 +4,12 @@
 namespace App\Controller\Auth;
 
 
-class RegisterController
-{
+use App\Core\Controller;
 
+class RegisterController extends Controller
+{
+    public function index()
+    {
+        return $this->view("auth.register");
+    }
 }

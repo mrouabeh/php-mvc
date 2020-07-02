@@ -9,6 +9,11 @@ use App\Core\Router;
 $router = new Router;
 
 $router->get('/', "HomeController@index");
-$router->get('/home', "HomeController@show");
+
+$router->get('/login', 'Auth\LoginController@index');
+$router->post('/login', 'Auth\LoginController@login');
+
+$router->get('/register', 'Auth\RegisterController@index');
+$router->post('/register', 'Auth\RegisterController@login');
 
 $router->run();
