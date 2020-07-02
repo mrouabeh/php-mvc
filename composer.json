@@ -16,5 +16,7 @@
             "View\\": "app/View"
         }
     },
-    "require": {}
+    "require": {
+        "twig/twig": "^3.0"
+    }
 }

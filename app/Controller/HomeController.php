@@ -4,10 +4,18 @@
 namespace App\Controller;
 
 
-class HomeController
+use App\Core\Controller;
+
+class HomeController extends Controller
 {
     public function index()
     {
-        echo "Home page";
+        return $this->view("index.html.twig");
+    }
+
+    public function show()
+    {
+        $page = "/home";
+        return $this->view('show.html.twig', ['page' => $page]);
     }
 }
