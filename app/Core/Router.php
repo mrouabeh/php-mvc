@@ -50,8 +50,14 @@ class Router
         {
             if ($route->matches($this->uri))
             {
-                $route->execute();
-//                return header
+                try {
+                    $route->execute();
+                    return ;
+                }
+                catch (\Exception $e)
+                {
+                    die("Error: " . $e->getMessage());
+                }
             }
         }
 
