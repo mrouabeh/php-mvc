@@ -17,15 +17,13 @@ class View
 
     public function render($path, $params = null)
     {
+        $path = str_replace(".", "/", $path);
+        $path .= ".html.twig";
         $viewPath = ROOT_VIEW . $path;
-        if (file_exists($viewPath))
-        {
-            if ($params)
-            {
+        if (file_exists($viewPath)) {
+            if ($params) {
                 echo $this->twig->render($path, $params);
-            }
-            else
-            {
+            } else {
                 echo $this->twig->render($path);
             }
         }

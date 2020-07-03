@@ -4,10 +4,11 @@
 namespace App\Core;
 
 use App\Utility\Database;
-use Exception;
-use PDO;
 
-class Model
+use PDO;
+use Exception;
+
+abstract class Model
 {
     protected $db;
     protected $table;
@@ -19,7 +20,7 @@ class Model
 
     public function all()
     {
-        if ($this->table)
+        if (isset($this->table))
         {
             $stmt = $this->db->query("SELECT * FROM {$this->table}");
             $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
@@ -29,7 +30,7 @@ class Model
 
     public function find(int $id)
     {
-        if ($this->table)
+        if (isset($this->table))
         {
             $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
             $stmt->bindParam(":id", $id);
@@ -45,23 +46,27 @@ class Model
         }
     }
 
-    public function select()
+    public function insert(array $fields)
     {
+        if (count($fields))
+        {
+            $params = [];
+            foreach ($fields as $key => $value)
+            {
+                $params[":{$key}"] = $value;
+            }
+            $colums = implode(", ", array_keys($fields));
+            $values = implode(", ", array_keys($params));
 
-    }
-
-    public function insert($data)
-    {
-
-    }
-
-    public function update($id)
-    {
-
-    }
-
-    public function delete($id)
-    {
-
+//            TODO: check that columns exist
+            $sql = "INSERT INTO {$this->table} (`{$colums}`) VALUES ({$values})";
+            $stmt = $this->db->prepare($sql);
+            foreach ($params as $key => $value)
+            {
+                $stmt->bindParam($key, $value);
+            }
+            $stmt->execute();
+        }
+        return false;
     }
 }

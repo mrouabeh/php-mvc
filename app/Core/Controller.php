@@ -4,24 +4,18 @@
 namespace App\Core;
 
 
-class Controller
+abstract class Controller
 {
-    public function __construct()
+    public function view($path, $params = null)
     {
-        $this->view = new View();
-    }
-
-    public function view($file, $params = null)
-    {
-        $path = str_replace(".", "/", $file);
-        $path .= ".html.twig";
+        $view = new View();
         if ($params)
         {
-            $this->view->render($path, $params);
+            $view->render($path, $params);
         }
         else
         {
-            $this->view->render($path);
+            $view->render($path);
         }
     }
 }

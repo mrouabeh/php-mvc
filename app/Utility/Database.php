@@ -3,11 +3,11 @@
 
 namespace App\Utility;
 
+use PDO;
 
 class Database
 {
-    private $db;
-    private $pdo;
+    static protected $db;
 
     public function __construct()
     {
@@ -28,7 +28,7 @@ class Database
                 ]
             );
         }
-        catch (\PDOException $e)
+        catch (PDOException $e)
         {
             die("Error :" . $e->getMessage());
         }
