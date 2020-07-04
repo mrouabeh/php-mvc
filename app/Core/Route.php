@@ -57,7 +57,7 @@ class Route
                     throw new \Exception("Method doesn't exist");
             }
             else
-                throw new \Exception("Class doesn't exist");
+                throw new \Exception("Class {$className} doesn't exist");
         }
         else
         {
