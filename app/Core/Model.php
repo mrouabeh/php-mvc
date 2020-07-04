@@ -5,13 +5,13 @@ namespace App\Core;
 
 use App\Utility\Database;
 
-use PDO;
 use Exception;
 
 abstract class Model
 {
     protected $db;
     protected $table;
+    protected $data;
 
     public function __construct()
     {
@@ -20,53 +20,46 @@ abstract class Model
 
     public function all()
     {
-        if (isset($this->table))
-        {
-            $stmt = $this->db->query("SELECT * FROM {$this->table}");
-            $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
-            return $stmt->fetchAll();
-        }
+        $this->data = $this->db->select($this->table)->results();
+        return $this->data();
     }
 
     public function find(int $id)
     {
-        if (isset($this->table))
+        $data = $this->db->select($this->table, ["id", "=", $id]);
+        if ($data->count())
         {
-            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
-            $stmt->bindParam(":id", $id);
-            $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
-            if ($stmt->execute())
-            {
-                return $stmt->fetch();
-            }
-            else
-            {
-                throw new Exception("sql execution failed");
-            }
+            $this->data = $data->first();
         }
+        return $this->data();
     }
 
-    public function insert(array $fields)
+    public function get(array $where = [])
     {
-        if (count($fields))
+        $data = $this->db->select($this->table, $where);
+        if ($data->count())
         {
-            $params = [];
-            foreach ($fields as $key => $value)
-            {
-                $params[":{$key}"] = $value;
-            }
-            $colums = implode(", ", array_keys($fields));
-            $values = implode(", ", array_keys($params));
-
-//            TODO: check that columns exist
-            $sql = "INSERT INTO {$this->table} (`{$colums}`) VALUES ({$values})";
-            $stmt = $this->db->prepare($sql);
-            foreach ($params as $key => $value)
-            {
-                $stmt->bindParam($key, $value);
-            }
-            $stmt->execute();
+            $this->data = $data->results();
         }
-        return false;
+        return $this->data();
+    }
+
+    public function data() {
+        return($this->data);
+    }
+
+    public function create(array $fields)
+    {
+        return $this->db->insert($this->table, $fields);
+    }
+
+    public function update($id, array $fields)
+    {
+        return($this->db->update($this->table, $id, $fields));
+    }
+
+    public function exists()
+    {
+        return(!empty($this->data));
     }
 }
